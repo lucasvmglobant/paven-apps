@@ -130,102 +130,137 @@
          "title": "Person",
          "oneOf": [
              {
-                 "$ref": "#/definitions/basicperson",
-                 "title": "Basic Person"
+                 "$ref": "#/definitions/heroCard",
+                 "title": "heroCard"
              },
              {
-                 "$ref": "#/definitions/person",
-                 "title": "Complex Person"
+                 "$ref": "#/definitions/bigCard",
+                 "title": "bigCard"
+             },
+             {
+                 "$ref": "#/definitions/verticalList",
+                 "title": "verticalList"
+             },
+             {
+                 "$ref": "#/definitions/verticalHorizontalList",
+                 "title": "verticalHorizontalList"
+             },
+             {
+                 "$ref": "#/definitions/actionList",
+                 "title": "actionList"
+             },
+             {
+                 "$ref": "#/definitions/highlightedList",
+                 "title": "highlightedList"
+             },
+             {
+                 "$ref": "#/definitions/collectionList",
+                 "title": "collectionList"
              }
          ],
          "definitions": {
-             "basicperson": {
+             "heroCard": {
                  "title": "Person",
                  "type": "object",
-                 "id": "person",
+                 "id": "heroCardSelect",
                  "properties": {
-                     "name": {
-                         "type": "string",
-                         "description": "First and Last name",
-                         "minLength": 4,
-                         "propertyOrder": 10
-                     },
-                     "age": {
-                         "type": "integer",
-                         "default": 21,
-                         "minimum": 18,
-                         "maximum": 99,
-                         "propertyOrder": 20
-                     },
-                     "gender": {
+                     "heroCardSelect": {
                          "type": "string",
                          "enum": [
-                             "male",
-                             "female"
+                             "contentArticle",
+                             "contentAudio",
+                             "contentVideo",
+                             "benefit",
+                             "action",
+                             "collection"
                          ],
                          "propertyOrder": 30
-                     },
-                     "favorite_color": {
-                         "type": "string",
-                         "format": "color",
-                         "title": "favorite color",
-                         "default": "#19CD91",
-                         "propertyOrder": 40
                      }
                  }
              },
-             "person": {
-                 "$ref": "#/definitions/basicperson",
+             "bigCard": {
+                 "$ref": "#/definitions/bigCard",
                  "properties": {
-                     "location": {
-                         "type": "object",
-                         "title": "Location",
-                         "properties": {
-                             "city": {
-                                 "type": "string"
-                             },
-                             "state": {
-                                 "type": "string"
-                             },
-                             "citystate": {
-                                 "type": "string",
-                                 "description": "This is generated automatically from the previous two fields",
-                                 "template": "{{city}}, {{state}}",
-                                 "watch": {
-                                     "city": "location.city",
-                                     "state": "location.state"
-                                 }
-                             }
-                         }
-                     },
-                     "pets": {
-                         "type": "array",
-                         "format": "table",
-                         "title": "Pets",
-                         "uniqueItems": true,
-                         "items": {
-                             "type": "object",
-                             "properties": {
-                                 "type": {
-                                     "type": "string",
-                                     "enum": [
-                                         "cat",
-                                         "dog",
-                                         "bird",
-                                         "reptile",
-                                         "other"
-                                     ],
-                                     "default": "dog"
-                                 },
-                                 "name": {
-                                     "type": "string"
-                                 },
-                                 "fixed": {
-                                     "type": "boolean",
-                                     "title": "spayed / neutered"
-                                 }
-                             }
-                         }
+                     "heroCardSelect": {
+                         "type": "string",
+                         "enum": [
+                             "contentArticle",
+                             "contentAudio",
+                             "contentVideo"
+                         ],
+                         "propertyOrder": 30
+                     }
+                 }
+             }
+         }
+     };
+
+     window.CONTENTFUL_FORM_EDITOR_SCHEMA = {
+         "title": "Person",
+         "oneOf": [
+         {
+                 "$ref": "#/definitions/heroCard",
+                 "title": "heroCard"
+             },
+             {
+                 "$ref": "#/definitions/bigCard",
+                 "title": "bigCard"
+             },
+             {
+                 "$ref": "#/definitions/verticalList",
+                 "title": "verticalList"
+             },
+             {
+                 "$ref": "#/definitions/verticalHorizontalList",
+                 "title": "verticalHorizontalList"
+             },
+             {
+                 "$ref": "#/definitions/actionList",
+                 "title": "actionList"
+             },
+             {
+                 "$ref": "#/definitions/highlightedList",
+                 "title": "highlightedList"
+             },
+             {
+                 "$ref": "#/definitions/collectionList",
+                 "title": "collectionList"
+             }
+         ],
+         "definitions": {
+             "heroCard": {
+                 "title": "Person",
+                 "type": "object",
+                 "id": "heroCard",
+                 "properties": {
+                     "cards": {
+                         "type": "string",
+                         "enum": [
+                             "contentArticle",
+                             "contentAudio",
+                             "contentVideo",
+                             "benefit",
+                             "action",
+                             "collection"
+                         ],
+                         "propertyOrder": 30
+                     }
+                 }
+             },
+             "bigCard": {
+                 "$ref": "#/definitions/bigCard",
+                 "properties": {
+                    "cards": {
+                         "type": "string",
+                         "enum": [
+                             "contentArticle",
+                             "contentAudio",
+                             "contentVideo",
+                             "benefit",
+                             "action",
+                             "collection"
+                         ],
+                         "propertyOrder": 40
                      }
                  }
              }
