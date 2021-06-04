@@ -121,77 +121,106 @@
 
      }(JSONEditor));
 
+
+
+     // https://github.com/jdorn/json-editor/blob/master/examples/advanced.html
+     // TODO: Make this configurable on Data Type level.
+     /*eslint quotes: [2, "double"]*/
      window.CONTENTFUL_FORM_EDITOR_SCHEMA = {
-         "title": "Person",
-         "oneOf": [
-         {
-                 "$ref": "#/definitions/heroCard",
-                 "title": "heroCard"
-             },
-             {
-                 "$ref": "#/definitions/bigCard",
-                 "title": "bigCard"
-             },
-             {
-                 "$ref": "#/definitions/verticalList",
-                 "title": "verticalList"
-             },
-             {
-                 "$ref": "#/definitions/verticalHorizontalList",
-                 "title": "verticalHorizontalList"
-             },
-             {
-                 "$ref": "#/definitions/actionList",
-                 "title": "actionList"
-             },
-             {
-                 "$ref": "#/definitions/highlightedList",
-                 "title": "highlightedList"
-             },
-             {
-                 "$ref": "#/definitions/collectionList",
-                 "title": "collectionList"
-             }
-         ],
-         "definitions": {
-             "heroCard": {
-                 "title": "Person",
-                 "type": "object",
-                 "id": "heroCard",
-                 "properties": {
-                     "cards": {
-                         "type": "string",
-                         "enum": [
-                             "contentArticle",
-                             "contentAudio",
-                             "contentVideo",
-                             "benefit",
-                             "action",
-                             "collection"
-                         ],
-                         "propertyOrder": 30
-                     }
-                 }
-             },
-             "bigCard": {
-                 "$ref": "#/definitions/bigCard",
-                 "properties": {
-                    "cards": {
-                         "type": "string",
-                         "enum": [
-                             "contentArticle",
-                             "contentAudio",
-                             "contentVideo",
-                             "benefit",
-                             "action",
-                             "collection"
-                         ],
-                         "propertyOrder": 40
-                     }
-                 }
-             }
-         }
-     };
+
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "oneOf": [
+        {
+            "type": "object",
+            "title": "heroCard",
+            "properties": {
+                "colour": {
+                    "type": "string",
+                    "enum": [
+                    "contentArticle",
+                    "contentAudio",
+                    "contentVideo",
+                    "benefit",
+                    "action",
+                    "collection"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "object",
+            "title": "bigCard",
+            "properties": {
+                "colour": {
+                    "type": "string",
+                    "enum": [
+                    "contentVideo",    
+                    "contentArticle",
+                    "contentAudio"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "object",
+            "title": "listCard",
+            "properties": {
+                "colour": {
+                    "type": "string",
+                    "enum": [
+                    "contentAudio",    
+                    "contentVideo",    
+                    "contentArticle"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "object",
+            "title": "actionCard",
+            "properties": {
+                "colour": {
+                    "type": "string",
+                    "enum": [
+                    "action",
+                    "contentArticle",
+                    "contentAudio",
+                    "contentVideo",
+                    "benefit"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "object",
+            "title": "seasonalCard",
+            "properties": {
+                "colour": {
+                    "type": "string",
+                    "enum": [
+                    "contentArticle",
+                    "contentAudio",
+                    "contentVideo"
+                    ]
+                }
+            }
+        },
+        {
+            "type": "object",
+            "title": "collectionCard",
+            "properties": {
+                "colour": {
+                    "type": "string",
+                    "enum": [
+                        "collection"
+                    ]
+                }
+            }
+        }
+    ],
+    "definitions": {}
+};
 
 
      var cfExt = window.contentfulExtension || window.contentfulWidget;
@@ -212,26 +241,13 @@
              disable_properties: true,
              show_errors: 'always'
          });
-         
-         var watcherCallback = function(path) {
-             cfApi.window.updateHeight();
-             validateAndSave();
-         };
-  
-         for (var key in editor.editors) {
-             if (editor.editors.hasOwnProperty(key) && key !== 'root') {
-                 editor.watch(key, watcherCallback.bind(editor, key));
-             }
+         editor.on('change', inputChanged);
+
+         function inputChanged () {
+            var currentJSON = editor.getValue();
+            cfApi.field.setValue(currentJSON);
          }
 
-         var validateAndSave = debounce(function () {
-             var errors = editor.validate();
-
-             if (errors.length === 0) {
-                 var currentJSON = editor.getValue();
-                 cfApi.field.setValue(currentJSON);
-             }
-         }, 150);
      }
 
      function createElement (elem, opts, parent) {
@@ -262,8 +278,21 @@
      }
 
 
-    </script>
 
+
+    </script>
+    <style>
+        .cf-btn-secondary, .cf-btn-secondary.active  {
+            display:none !important;
+        }
+        .jfe-header > span {
+            display:none !important;
+        }
+        .cf-form-field jfe-form-control > label{
+            text-transform: capitalize !important;
+            margin-top: 10px !important;
+        }
+    </style>
 
   </body>
 </html>
