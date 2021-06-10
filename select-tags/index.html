@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>JSON Form Editor Widget</title>
+    <script src="https://unpkg.com/contentful-ui-extensions-sdk@3/dist/cf-extension-api.js"></script>
+    <script src="https://unpkg.com/json-editor@0.7.28/dist/jsoneditor.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/contentful-ui-extensions-sdk@3/dist/cf-extension.css" />
+  </head>
+  <body>
+    <script>
+    var data = [{'1':'Name'}, {'2': 'Age'}, {'3': 'Gender'}];
+
+    var $select = $('#datas');
+        $.each(data, function(i, val){
+        $select.append($('<option />', { value: (i+1), text: val[i+1] }));
+    });
+
+    $("#e1").select2();
+
+    $('form').submit(function () {
+        var newvalue = '';
+        var value = $('select[name="_state"]').val();
+        if (value) {
+            newvalue = value;
+        }
+        $('input[name="state"]').val(newvalue);
+    })
+
+    </script>
+    <select multiple name="datas" id="datas"></select>
+    <style>
+        .cf-btn-secondary, .cf-btn-secondary.active  {
+            display:none !important;
+        }
+        .jfe-header > span {
+            display:none !important;
+        }
+        .cf-form-field jfe-form-control > label{
+            text-transform: capitalize !important;
+            margin-top: 10px !important;
+        }
+    </style>
+
+  </body>
+</html>

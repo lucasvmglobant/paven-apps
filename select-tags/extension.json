@@ -1,0 +1,6 @@
+{
+    "id": "selectTagsEditor",
+    "name": "Select Tags",
+    "srcdoc": "./index.html",
+    "fieldTypes": ["Object"]
+}
