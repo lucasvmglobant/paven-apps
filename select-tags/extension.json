@@ -1,6 +1,6 @@
 {
-    "id": "select-tags-sidebar",
-    "name": "Select Tags Sidebar",
-    "srcdoc": "./src/index.html",
-    "sidebar": true
-  }
+  "id": "selectTagsEditor",
+  "name": "Select Tags",
+  "srcdoc": "./index.html",
+  "fieldTypes": ["Object"]
+}
