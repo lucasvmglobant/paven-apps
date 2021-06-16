@@ -14,130 +14,55 @@
 <body>  
 <select id="selectElement" multiple="multiple"></select>
   <script>
-    var data = [{
-      "Topic tag 9": [{
-        "title": "topic-debt",
-        "value": "topic-debt"
-      }, {
-        "title": "topic-credit-cards",
-        "value": "topic-credit-cards"
-      }, {
-        "title": "topic-roth-ira",
-        "value": "topic-roth-ira"
-      }, {
-        "title": "topic-housing",
-        "value": "topic-housing"
-      }, {
-        "title": "topic-401(k)",
-        "value": "topic-401(k)"
-      }, {
-        "title": "topic-salary",
-        "value": "topic-salary"
-      }, {
-        "title": "topic-debt",
-        "value": "topic-debt"
-      }, {
-        "title": "topic-rsus",
-        "value": "topic-rsus"
-      }, {
-        "title": "topic-compounding",
-        "value": "topic-compounding"
-      }, {
-        "title": "topic-credit-cards",
-        "value": "topic-credit-cards"
-      }, {
-        "title": "topic-financial-aid",
-        "value": "topic-financial-aid"
-      }, {
-        "title": "topic-relocation",
-        "value": "topic-relocation"
-      }],
-      "Topic tag 7": [{
-        "title": "topic-combining-finances",
-        "value": "topic-combining-finances"
-      }, {
-        "title": "credit-cards",
-        "value": "credit-cards"
-      }, {
-        "title": "topic-401(k)",
-        "value": "topic-401(k)"
-      }, {
-        "title": "Sergeant",
-        "value": "srgt"
-      }, {
-        "title": "Lieutenant",
-        "value": "lten"
-      }, {
-        "title": "Captain",
-        "value": "capt"
-      }],
-      "Other Titles": [{
-        "title": "Agressor",
-        "value": "agrs"
-      }, {
-        "title": "Apex Predator",
-        "value": "apre"
-      }, {
-        "title": "Cartographer",
-        "value": "cart"
-      }, {
-        "title": "Golden Ticket",
-        "value": "gold"
-      }, {
-        "title": "Kickstarter",
-        "value": "kick"
-      }, {
-        "title": "Most Valuable Poster",
-        "value": "lore"
-      }, {
-        "title": "New Backer",
-        "value": "newb"
-      }, {
-        "title": "Original Backer",
-        "value": "orib"
-      }, {
-        "title": "Predator",
-        "value": "pred"
-      }, {
-        "title": "Prospector",
-        "value": "pros"
-      }, {
-        "title": "Veteran Backer",
-        "value": "vetb"
-      }, {
-        "title": "Subscriber",
-        "value": "subs"
-      }],
-      "Official Titles": [{
-        "title": "Moderator",
-        "value": "modr"
-      }, {
-        "title": "Staff",
-        "value": "staf"
-      }, {
-        "title": "Developer",
-        "value": "devr"
-      }, {
-        "title": "Creator",
-        "value": "crtr"
-      }]
-    }];
-    
-    $.each(data, function(i, optgroups) {
-            $.each(optgroups, function(groupName, options) {
+    var dataJsonGet = [];
+		fetch('https://storage.googleapis.com/paven-dev-contenful-resources/tags.json', {
+            headers: {
+                'Origin': 'https://storage.googleapis.com/paven-dev-contenful-resources/tags.json'
+            }
+        })
+        .then(response => response.json())
+        .then((dataJson) => {
+            $.each(dataJson, function(groupName, options) {
                 var $optgroup = $("<optgroup>", {
                     label: groupName
                 });
                 $optgroup.appendTo('#selectElement');
                 $.each(options, function(j, option) {
                     var $option = $("<option>", {
-                        text: option.title,
+                        text: option.value,
                         value: option.value
                     });
                     $option.appendTo($optgroup);
                 });
             });
-        });
+       window.contentfulExtension.init(function (extension) {
+      let value = extension.field.getValue();
+      
+
+      var selectedItems =[];
+      selectedItems.push(value);
+
+      $('#selectElement').select2('val',selectedItems );
+      
+      //We need to check if the user has unselected the item
+      $('#selectElement').on('select2:unselect', function (e) {
+        console.log($('#selectElement').val())
+        //extension.field.setValue will save the value
+        extension.field.setValue($('#selectElement').val());
+        self.select2('close');
+    });
+
+      $('#selectElement').on('select2:select', function (e) {
+        console.log($('#selectElement').val())
+        extension.field.setValue($('#selectElement').val());
+        self.select2('close');
+    });
+    });
+           
+     })
+        .catch(function(err) {
+            console.error(err);
+    });     
     
     /* Anything that gets to the document
    	will hide the dropdown */
@@ -152,37 +77,10 @@
     }); 
     $('#selectElement').select2({
       width: '100%',
+      height: '50%',
       placeholder: "Select an Option"
     });
-      
-    //Init contentful
-    window.contentfulExtension.init(function (extension) {
 
-      //We get the value from entry to show on page load  
-      let value = extension.field.getValue();
-      
-
-      var selectedItems =[];
-      selectedItems.push(value);
-
-      $('#selectElement').select2('val',selectedItems );
-      
-      //We need to check if the user has unselected the item
-      $('#selectElement').on('select2:unselect', function (e) {
-
-        //extension.field.setValue will save the value into contentful
-        extension.field.setValue($('#selectElement').val());
-        self.select2('close');
-    });
-
-      //Save value on check
-      $('#selectElement').on('select2:select', function (e) {
-
-        extension.field.setValue($('#selectElement').val());
-        self.select2('close');
-    });
-    });
-    
   </script>
 </body>
 </html>
